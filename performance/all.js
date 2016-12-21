@@ -16,9 +16,19 @@ const suites = (() => {
 })();
 
 /*
+ * Display numbers with locale format
+ */
+function formatNumber(n, min, max) {
+  return n.toLocaleString('en-US', {
+    minimumFractionDigits: min != null ? min : 0,
+    maximumFractionDigits: max != null ? max : 2,
+  });
+}
+
+/*
  * Show results for a suite tests as a table
  */
-function showSuiteResult(name, tests) {
+function showSuiteResult(tests, name) {
   if(!tests || !tests.length) {
     return;
   }
@@ -28,7 +38,9 @@ function showSuiteResult(name, tests) {
   });
 
   const fastestHz = tests[0].hz;
-  //console.log(`Test results for ${name}:`);
+  if(name) {
+    console.log(`Test results for ${name.yellow}:`);
+  }
   const table = new Table({
     chars    : {'mid': '', 'left-mid': '', 'mid-mid': '', 'right-mid': ''},
     head     : ['#'.red, 'Test'.red, 'Speed %'.red, 'Hz'.red],
@@ -36,7 +48,7 @@ function showSuiteResult(name, tests) {
   });
   tests.forEach((test, i) => {
     const speed = i === 0 ? '100.00' : (100*test.hz/fastestHz).toFixed(2);
-    table.push([i+1, test.name, speed, parseInt(test.hz, 10)]);
+    table.push([i+1, test.name, speed, formatNumber(test.hz, 0, 0)]);
   });
   console.log(table.toString());
 }
@@ -54,11 +66,11 @@ suites.forEach((suite) => {
     const test = event.target;
     const testN = `[${i++}/${suite.length}]`;
     const testName = test.name;
-    const testDetails = `x ${test.hz} ops/sec ±${test.stats.rme.toFixed(2)} (${test.stats.sample.length} runs sampled)`;
+    const testDetails = `x ${formatNumber(test.hz, 0, 0)} ops/sec ±${test.stats.rme.toFixed(2)} (${test.stats.sample.length} runs sampled)`;
     console.log(` ${testN.cyan} ${testName.white} ${testDetails.gray}`);
     finished.push(event.target);
   }).on('complete', () => {
-    showSuiteResult(suite.name, finished);
+    showSuiteResult(finished);
     process.exit(0);
   }).run();
 });
