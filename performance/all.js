@@ -1,3 +1,4 @@
+const fs = require('fs');
 const Benchmark = require('benchmark');
 const requireAll = require('require-all');
 const tableFormatter = require('table');
@@ -9,10 +10,21 @@ const prompt = require('prompt');
  */
 function loadSuites() {
   const list = [];
-  const files = requireAll({ dirname: `${__dirname}/suites` });
-  Object.keys(files).forEach((fileName) => {
-    list.push(files[fileName]);
-  });
+
+  for(let i = 2; i < process.argv.length; i++) {
+    try {
+      const path = fs.realpathSync(process.argv[i]);
+      list.push(require(path));
+    } catch(error) {}
+  }
+
+  if(list.length === 0) {
+    showNote('You can specify the suite filenames as arguments to run only the desired tests.'.grey);
+    const files = requireAll({ dirname: `${__dirname}/suites` });
+    Object.keys(files).forEach((fileName) => {
+      list.push(files[fileName]);
+    });
+  }
   return list;
 }
 
@@ -53,12 +65,19 @@ function showSuiteResult(tests, name) {
     drawHorizontalLine: (index, size) => index <= 1 || index === size,
     border: tableFormatter.getBorderCharacters('norc'),
   };
-  const tableData = [['#'.red, 'Test'.red, 'Speed %'.red, 'Hz'.red]];
+  const tableData = [['#'.red, 'Test'.red, 'Speed %'.red, 'Ops/sec'.red]];
   tests.forEach((test, i) => {
     const speed = i === 0 ? '100.00' : (100*test.hz/fastestHz).toFixed(2);
     tableData.push([i+1, test.name, speed, formatNumber(test.hz, 0, 0)]);
   });
   console.log(tableFormatter.table(tableData, tableOptions));
+}
+
+/*
+ * Show a note message
+ */
+function showNote(msg) {
+  console.log('⬥ '.cyan + msg.grey);
 }
 
 /*
@@ -70,7 +89,9 @@ function showIntro(suites) {
 
   tableData.push(['Platform'.grey, Benchmark.platform.description]);
 
-  console.log('Run the script with '.grey + '-i' + ' to enable the interactive mode.'.grey);
+  if(!interactiveRun) {
+    showNote('Run the script with '.grey + '-i' + ' to enable the interactive mode.'.grey);
+  }
   console.log(tableFormatter.table(tableData, tableOptions));
 }
 
@@ -80,6 +101,7 @@ function showIntro(suites) {
 function showEnd() {
   console.log('️️✔'.green + ' All suites finished.');
   console.log('');
+  process.exit();
 }
 
 /*
@@ -88,6 +110,7 @@ function showEnd() {
 function showInterruption() {
   console.log('✗'.red + ' Exiting.');
   console.log('');
+  process.exit();
 }
 
 /*
@@ -135,7 +158,7 @@ function executeSuites(suites) {
     if(interactiveRun) {
       prompt.get({
         name: 'run',
-        message: 'Run test ' + suite.name.yellow + '? [' + 'Y'.green + 'es'.white + '|' + 'N'.white + 'o|' + 'E'.white + 'xit]',
+        message: 'Run test ' + suite.name.yellow + '? [' + 'Y'.yellow + 'es'.white + '|' + 'N'.white + 'o|' + 'E'.white + 'xit]',
         validator: /y(es)?|n(o)?|e(xit)?/i,
       }, (err, result) => {
         if(!result) {
