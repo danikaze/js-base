@@ -7,5 +7,6 @@ Just a list of tests, benchmarks and good practices for JavaScript.
   * **performance/** performance tests.
     * **suites/** list of test cases to execute.
     * **all.js** executing this file with `node all.js` will load and run all test suites from `suites` folder.
+    * **README.md** Summary with some results from the tests.
   * **index.js** main entry point. Currently same as `performance/all.js`
   * **README.md** this file.

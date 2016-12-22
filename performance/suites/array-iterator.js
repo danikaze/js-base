@@ -13,6 +13,10 @@ function createArray(n) {
   return arr;
 };
 
+function handler(key, value) {
+  //
+}
+
 /*
  * test arrays
  */
@@ -22,51 +26,45 @@ const arr = createArray(100);
  * testers
  */
 function forEach(arr) {
-  let item;
   arr.forEach((value, key) => {
-    item = value;
+    handler(key, value);
   });
 }
 
 function classicFor(arr) {
-  let item;
   let i;
   for(i = 0; i < arr.length; i++) {
-    item = arr[i];
+    handler(i, arr[i]);
   }
 }
 
 function classicForCached(arr) {
-  let item;
   let i, n;
   for(i = 0, n = arr.length; i < n; i++) {
-    item = arr[i];
+    handler(i, arr[i]);
   }
 }
 
 function classicWhile(arr) {
-  let item;
   let i = 0;
   while(i < arr.length) {
-    item = arr[i];
+    handler(i, arr[i]);
     i++;
   }
 }
 
 function classicWhileCached(arr) {
-  let item;
   let i = 0, n = arr.length;
   while(i < n) {
-    item = arr[i];
+    handler(i, arr[i]);
     i++;
   }
 }
 
 function reverseWhile(arr) {
-  let item;
   let i = arr.length;
   while(--i) {
-    item = arr[i];
+    handler(i, arr[i]);
   }
 }
 
