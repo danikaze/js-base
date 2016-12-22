@@ -1,0 +1,1 @@
+require('./performance/all.js');
