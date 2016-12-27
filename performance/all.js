@@ -77,7 +77,7 @@ function showSuiteResult(tests, name) {
  * Show a note message
  */
 function showNote(msg) {
-  console.log('⬥ '.cyan + msg.grey);
+  console.log('※ '.cyan + msg.grey);
 }
 
 /*
