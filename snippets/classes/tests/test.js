@@ -1,10 +1,10 @@
 const assert = require('assert');
-const values = require('./values');
+const values = require('../values');
 
 /*
  * Class tester
  */
-module.exports = function(Klass) {
+function tester(Klass) {
   const instance = new Klass(values.PARAMETER);
 
   /*
@@ -16,7 +16,7 @@ module.exports = function(Klass) {
   assert.ok(Klass.staticPrivateProp === undefined);
   // instance properties
   assert.ok(instance.publicProp !== undefined);
-  assert.ok(instance.privateProp !== undefined);
+  assert.ok(instance.privateProp === undefined);
 
   // static methods
   assert.ok(Klass.staticPublicMethod !== undefined);
@@ -31,7 +31,7 @@ module.exports = function(Klass) {
    * Check property values
    */
   assert.equal(Klass.staticPublicProp, values.STATIC_PUBLIC_PROP);
-  assert.equal(Klass.publicProp, values.PUBLIC_PROP);
+  assert.equal(instance.publicProp, values.PUBLIC_PROP);
 
   /*
    * Check call values
@@ -40,8 +40,9 @@ module.exports = function(Klass) {
     staticPublicProp: values.STATIC_PUBLIC_PROP,
   });
   assert.deepEqual(Klass.staticPrivilegedMethod(), {
-    staticPublicProp : values.STATIC_PUBLIC_PROP,
-    staticPrivateProp: values.STATIC_PRIVATE_PROP,
+    staticPublicProp   : values.STATIC_PUBLIC_PROP,
+    staticPrivateProp  : values.STATIC_PRIVATE_PROP,
+    staticPrivateMethod: values.STATIC_PRIVATE_METHOD,
   });
 
   assert.deepEqual(instance.publicMethod(), {
@@ -55,5 +56,8 @@ module.exports = function(Klass) {
     staticPrivateProp: values.STATIC_PRIVATE_PROP,
     publicProp       : values.PUBLIC_PROP,
     privateProp      : values.PRIVATE_PROP,
+    privateMethod    : values.PRIVATE_METHOD,
   });
 };
+
+module.exports = tester;
