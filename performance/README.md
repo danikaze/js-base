@@ -262,6 +262,29 @@ To run your own results, just execute:
 └───┴───────────────────────────┴─────────┴─────────────┘
 ```
 
+## String parse (string-parse.js)
+```
+┌──────────┬───────────────────────────────┐
+│ Platform │ Node.js 8.9.4 on Win32 64-bit │
+└──────────┴───────────────────────────────┘
+```
+```
+┌────┬────────────────────────────┬─────────┬───────────┐
+│  # │ Test                       │ Speed % │   Ops/sec │
+├────┼────────────────────────────┼─────────┼───────────┤
+│  1 │ oneBigRegExpOneShot-short  │  100.00 │ 4,646,001 │
+│  2 │ listOfRegExpOneShot-short  │   34.86 │ 1,619,703 │
+│  3 │ oneBigRegExpMultiple-short │   23.98 │ 1,114,135 │
+│  4 │ oneBigRegExpOneShot-long   │   11.71 │   543,820 │
+│  5 │ charByChar-short           │   10.46 │   486,043 │
+│  6 │ listOfRegExpOneShot-long   │    6.45 │   299,498 │
+│  7 │ listOfRegExpMultiple-short │    5.60 │   260,388 │
+│  8 │ oneBigRegExpMultiple-long  │    2.14 │    99,540 │
+│  9 │ charByChar-long            │    0.84 │    39,057 │
+│ 10 │ listOfRegExpMultiple-long  │    0.49 │    22,609 │
+└────┴────────────────────────────┴─────────┴───────────┘
+```
+
 ## Template replacement (templates.js)
 ```
 ┌──────────┬────────────────────────────────┐
