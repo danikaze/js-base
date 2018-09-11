@@ -7,7 +7,9 @@ const number = "123456.7890";
  * testers
  */
 function useParseInt() {
-  parseInt(number, 10);
+  for (let i = 0; i < N; i++) {
+    parseInt(number, 10);
+  }
 }
 
 function useParseFloat() {
@@ -17,15 +19,21 @@ function useParseFloat() {
 }
 
 function useNumber() {
-  Number(number);
+  for (let i = 0; i < N; i++) {
+    Number(number);
+  }
 }
 
 function useNumberFloor() {
-  Math.floor(Number(number));
+  for (let i = 0; i < N; i++) {
+    Math.floor(Number(number));
+  }
 }
 
 function useNumberBitwise() {
-  Number(number) | 0;
+  for (let i = 0; i < N; i++) {
+    Number(number) | 0;
+  }
 }
 
 /*
@@ -35,6 +43,7 @@ const suite = new Benchmark.Suite('Number coercion');
 
 suite.add('parseInt(x, 10)', useParseInt)
      .add('parseFloat(x)', useParseFloat)
+     .add('Math.floor(Number(x))', useNumberFloor)
      .add('Number(x)', useNumber)
      .add('Number(x) | 0', useNumberBitwise);
 
