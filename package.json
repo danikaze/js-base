@@ -6,8 +6,8 @@
   "bugs": "https://github.com/danikaze/js-base/issues",
   "main": "index.js",
   "scripts": {
-    "test": "node performance/all.js",
-    "start": "node Server.js"
+    "all": "node performance/all.js",
+    "start": "node performance/all.js -i"
   },
   "repository": {
     "type": "git",
